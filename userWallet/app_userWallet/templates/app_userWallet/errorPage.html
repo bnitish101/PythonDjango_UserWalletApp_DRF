@@ -1,0 +1,16 @@
+{% extends 'app_userWallet/main.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="col-lg-12 container-body">
+        <div class="row">
+            <h2>Error Page</h2>
+            <div class="col-lg-6">
+                <h5>{{data}}</h5>
+            </div>
+            <div class="col-lg-6">
+                <a href="{{request.META.HTTP_REFERER}}"><h5 class="float-end">Back</h5></a>
+            </div>
+        </div> 
+    </div>
+{% endblock content %}

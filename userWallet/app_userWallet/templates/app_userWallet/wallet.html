@@ -1,0 +1,75 @@
+{% extends 'app_userWallet/main.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="col-lg-12 container-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2>Wallet</h2>
+            </div>
+            <div class="col-lg-6">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'logout' %}"><h5 class="float-end">Logout</h5></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Welcome {{request.user}}</h4>
+                
+                <div class="form-group">
+                    <label>Available Funds</label>
+                </div>
+                <div class="form-group">
+                    {% if userTransactionHistory.count > 0 %}
+                        <label>Rs. {{sum_updateAmount.updateAmount__sum}}</label>
+                    {% else %}
+                    <label>Rs. 0</label>
+                    {% endif%}
+                </div>
+                <br>
+                <form action="{% url 'submit-wallet' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="fund">Manage Funds</label>
+                        <input type="text" class="form-control" name="updateAmount" id="updateAmount" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="submit" class="form-control btn btn-info" name="fund" value="Add">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="submit" class="form-control btn btn-danger" name="fund" value="Remove">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>    
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <th>Date & Time</th>
+                        <th>Amount</th>
+                        <th>Added By</th>
+                    </thead>
+                    <tbody>
+                        {% if userTransactionHistory.count > 0 %}
+                            {% for TransactionHistory in userTransactionHistory %}
+                            <tr>  
+                                <td>{{TransactionHistory.updated}}</td>
+                                <td>{{TransactionHistory.updateAmount}}</td>
+                                <td>nitish@gmial.com</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center">No data found!</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>    
+        </div>    
+    </div>
+{% endblock content %}
